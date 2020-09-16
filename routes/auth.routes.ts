@@ -54,12 +54,10 @@ router.post(
       const err = validationResult(req);
 
       if (!err.isEmpty()) {
-        return res
-          .status(400)
-          .json({
-            errors: err.array(),
-            message: 'Uncorrected data during the login'
-          });
+        return res.status(400).json({
+          errors: err.array(),
+          message: 'Uncorrected data during the login'
+        });
       }
 
       const { email, password } = req.body;
