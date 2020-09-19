@@ -1,21 +1,28 @@
 import * as React from 'react';
 import {useHTTP} from '../hooks/useHTTP';
+import {useToast} from '../hooks/useToast';
 
 export function Auth() {
     const [form, setForm] = React.useState({
         email: '', password: ''
     });
-    const {loading, req} = useHTTP();
+    const toast = useToast();
+    const {loading, req, err, clearErr} = useHTTP();
+
+    React.useEffect(() => {
+        toast(err);
+        clearErr();
+    }, [err, toast, clearErr]);
 
     function handleForm(e: React.FormEvent<HTMLInputElement>) {
         const input = e.target as HTMLInputElement;
-        setForm({...form, [input.id]: input.id})
+        setForm({...form, [input.id]: input.value})
     }
 
     async function registerHandler() {
         try {
-            const data = await req('http://localhost:5000/api/auth/register', 'POST', {...form}, {accepts:"application/json"});
-            console.log(data);
+            const data = await req('/api/auth/register', 'post', {...form}, {});
+            toast(data.message);
         } catch (e) {
             console.error(e);
         }

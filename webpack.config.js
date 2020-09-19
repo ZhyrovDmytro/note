@@ -22,6 +22,14 @@ module.exports = {
     resolve: {
         extensions: [ '.tsx', '.ts', '.js', '.ts' ],
     },
+    devServer: {
+        proxy: {
+            '/api': {
+                target: 'http://localhost:5001',
+                changeOrigin: true
+            }
+        }
+    },
     plugins: [
         new HtmlWebpackPlugin({template: './public/index.html', filename: "./index.html",})
     ]
