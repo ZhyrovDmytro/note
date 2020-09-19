@@ -13,7 +13,7 @@ export const useRoutes = (isAuthenticated: boolean): JSX.Element => {
                 <Route exact path="/notes" component={Notes} />
                 <Route exact path="/create" component={CreateNote} />
                 <Route exact path="/detail/:id" component={Detail} />
-                <Redirect to="/" />
+                <Redirect to="/create" />
             </Switch>
         )
     }

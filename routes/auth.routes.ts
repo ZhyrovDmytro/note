@@ -11,10 +11,15 @@ const router = Router();
 router.post(
   '/register',
   [
-    check('email', 'Wrong email format').isEmail,
+    check('email', 'Wrong email format').isEmail(),
     check('password', 'Pass should have min 6 characters').isLength({ min: 6 })
   ],
   async (req: express.Request, res: express.Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     try {
       const err = validationResult(req);
 
