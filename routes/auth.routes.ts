@@ -15,14 +15,12 @@ router.post(
     check('password', 'Pass should have min 6 characters').isLength({ min: 6 })
   ],
   async (req: express.Request, res: express.Response) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+    const err = validationResult(req);
+    if (!err.isEmpty()) {
+      return res.status(400).json({ errors: err.array() });
     }
 
     try {
-      const err = validationResult(req);
-
       if (!err.isEmpty()) {
         return res
           .status(400)
@@ -78,7 +76,7 @@ router.post(
         return res.status(400).json({ message: 'Incorrect password' });
       }
 
-      const token = jwt.sing({ userId: user.id }, config.get('jwtSecret'), {
+      const token = jwt.sign({ userId: user.id }, config.get('jwtSecret'), {
         expiresIn: '1h'
       });
 

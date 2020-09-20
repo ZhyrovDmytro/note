@@ -22,6 +22,15 @@ export function Auth() {
     async function registerHandler() {
         try {
             const data = await req('/api/auth/register', 'post', {...form}, {});
+            data && toast(data.message);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async function loginHandler() {
+        try {
+            const data = await req('/api/auth/login', 'post', {...form}, {});
             toast(data.message);
         } catch (e) {
             console.error(e);
@@ -39,7 +48,7 @@ export function Auth() {
                 <label htmlFor="password">Password</label>
             </div>
             <div>
-                <button>
+                <button onClick={loginHandler}>
                     Login
                 </button>
                 <button onClick={registerHandler} disabled={loading}>
