@@ -10,10 +10,16 @@ export const useRoutes = (isAuthenticated: boolean): JSX.Element => {
     if(isAuthenticated) {
         return (
             <Switch>
-                <Route exact path="/notes" component={Notes} />
-                <Route exact path="/create" component={CreateNote} />
-                <Route exact path="/detail/:id" component={Detail} />
-                <Redirect to="/create" />
+                <Route exact path="/notes">
+                    <Notes/>
+                </Route>
+                <Route exact path="/create">
+                    <CreateNote/>
+                </Route>
+                <Route exact path="/detail/:id">
+                    <Detail />
+                </Route>
+                <Redirect to="/notes" />
             </Switch>
         )
     }
