@@ -1,4 +1,6 @@
+import {useContext} from 'react';
 import * as React from 'react';
+import {AuthContext} from '../context/AuthContext';
 import {useHTTP} from '../hooks/useHTTP';
 import {useToast} from '../hooks/useToast';
 
@@ -7,6 +9,7 @@ export function Auth() {
         email: '', password: ''
     });
     const toast = useToast();
+    const {login} = useContext(AuthContext);
     const {loading, req, err, clearErr} = useHTTP();
 
     React.useEffect(() => {
@@ -31,6 +34,7 @@ export function Auth() {
     async function loginHandler() {
         try {
             const data = await req('/api/auth/login', 'post', {...form}, {});
+            login(data.token, data.userId);
             toast(data.message);
         } catch (e) {
             console.error(e);

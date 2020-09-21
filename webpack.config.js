@@ -8,7 +8,8 @@ module.exports = {
     entry: APP_DIR + '/src/index.tsx',
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, BUILD_DIR)
+        path: path.resolve(__dirname, BUILD_DIR),
+        publicPath: '/'
     },
     module: {
         rules: [
@@ -23,6 +24,7 @@ module.exports = {
         extensions: [ '.tsx', '.ts', '.js', '.ts' ],
     },
     devServer: {
+        historyApiFallback: true,
         proxy: {
             '/api': {
                 target: 'http://localhost:5001',
