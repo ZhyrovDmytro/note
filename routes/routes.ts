@@ -5,8 +5,7 @@ const User = require('../modules/User');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
-const { Router } = require('express');
-const router = Router();
+const router = express.Router();
 
 router.post(
   '/register',
