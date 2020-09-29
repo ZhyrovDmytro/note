@@ -5,7 +5,7 @@ const cors = require('cors');
 const router = require('../routes/routes');
 const note = require('../routes/note');
 
-const PORT = config.get('port') || 5001;
+const PORT = 5001;
 const app = express();
 
 app.use(cors());

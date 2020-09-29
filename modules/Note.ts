@@ -1,5 +1,7 @@
+// @ts-ignore
 const { Schema, model, Types } = require('mongoose');
 
+// @ts-ignore
 const schema = new Schema({
   text: { type: String, required: true, unique: true },
   header: { type: String, required: true },
