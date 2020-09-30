@@ -18,7 +18,7 @@ export function CreateNote(): JSX.Element {
     const handleKetPress = async (e: React.KeyboardEvent) => {
         if(e.key === 'Enter') {
             try {
-                const data = await req('/api/note/create', 'POST', {header: form.headline, text: form.note, userId: auth.token}, {Authorization:
+                const data = await req('/api/note/create', 'POST', {header: form.headline, text: form.note}, {Authorization:
                     `Bearer ${auth.token}`
                 });
 
@@ -27,7 +27,7 @@ export function CreateNote(): JSX.Element {
                 console.log(e);
             }
         }
-    }
+    };
 
     return (
         <div>

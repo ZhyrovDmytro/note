@@ -4,10 +4,16 @@ const auth = require('../middleware/isAuth');
 
 const router = express.Router();
 
+interface CreateNoteRequest extends express.Request {
+  headline: string;
+  text: string;
+  userId: string;
+}
+
 router.post(
   '/create',
   auth,
-  async (req: express.Request, res: express.Response) => {
+  async (req: CreateNoteRequest, res: express.Response) => {
     try {
       const { text } = req.body;
       const { header } = req.body;
@@ -34,9 +40,9 @@ router.post(
   }
 );
 
-router.get('/', auth, async (req: express.Request, res: express.Response) => {
+router.get('/', auth, async (req: CreateNoteRequest, res: express.Response) => {
   try {
-    const notes = Note.find({ owner: req.headers.userId });
+    const notes = await Note.find({ owner: req.headers.userId });
 
     res.json(notes);
   } catch (e) {
@@ -48,7 +54,7 @@ router.get('/', auth, async (req: express.Request, res: express.Response) => {
 router.get(
   '/:id',
   auth,
-  async (req: express.Request, res: express.Response) => {
+  async (req: CreateNoteRequest, res: express.Response) => {
     try {
       const notes = Note.findById(req.params.id);
       res.json(notes);
