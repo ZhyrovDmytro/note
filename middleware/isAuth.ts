@@ -19,7 +19,7 @@ module.exports = (
       res.status(401).json({ message: 'Not authorized' });
     }
 
-    req.headers.userId = jwt.verify(token, config.get('jwtSecret'));
+    req.headers = jwt.verify(token, config.get('jwtSecret'));
     next();
   } catch (e) {
     console.error(e);
