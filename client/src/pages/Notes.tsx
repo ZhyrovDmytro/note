@@ -1,11 +1,12 @@
 import {useContext} from 'react';
 import * as React from 'react';
+import {NoteItem, NoteItemProps} from '../components/NoteItem';
 import {AuthContext} from '../context/AuthContext';
 import {useHTTP} from '../hooks/useHTTP';
 
 export function Notes() {
     const [notes, setNotes] = React.useState([]);
-    const {req} = useHTTP();
+    const {req, loading} = useHTTP();
     const auth = useContext(AuthContext);
 
     const fetchNotes = React.useCallback(async () => {
@@ -24,16 +25,14 @@ export function Notes() {
     }, [fetchNotes]);
 
     return (
-        <div>
-            {notes.map((item) => {
-                return (
-                    <div key={Math.random()}>
-                        <h1>
-                            {item.header}
-                        </h1>
-                        <p>{item.text}</p>
-                    </div>
-                );
-            })}
-        </div>)
+        <>
+            {notes ? (
+                <div>
+                    <h1>Notes</h1>
+                    {loading && <p>Loading...</p>}
+                    {notes.map((note: NoteItemProps) => <NoteItem header={note.header} text={note.text} key={note.header} />)}
+                </div>
+                ) : <p>You have no notes</p>
+            }
+        </>)
 }
