@@ -2,15 +2,18 @@ import {useContext} from 'react';
 import * as React from 'react';
 import {AuthContext} from '../context/AuthContext';
 import {useHTTP} from '../hooks/useHTTP';
+import {useHistory} from 'react-router-dom';
+
 
 export function CreateNote(): JSX.Element {
     const auth = useContext(AuthContext);
     const {req} = useHTTP();
+    const history = useHistory();
 
     const [form, setForm] = React.useState({
         headline: '', note: ''
     });
-    function handleForm(e: React.FormEvent<HTMLInputElement>) {
+    function handleForm(e: React.FormEvent<HTMLTextAreaElement | HTMLInputElement>) {
         const input = e.target as HTMLInputElement;
         setForm({...form, [input.id]: input.value})
     }
@@ -22,7 +25,7 @@ export function CreateNote(): JSX.Element {
                     `Bearer ${auth.token}`
                 });
 
-                console.log(data);
+                history.push(`/detail/${data.newNote._id}`);
             } catch (e) {
                 console.log(e);
             }
@@ -32,12 +35,16 @@ export function CreateNote(): JSX.Element {
     return (
         <div>
             <div>
-                <input placeholder="Write headline"  id="headline" value={form.headline} onChange={handleForm}/>
                 <label htmlFor="headline">Headline text</label>
+                <div>
+                    <input placeholder="Write headline"  id="headline" value={form.headline} onChange={handleForm}/>
+                </div>
             </div>
             <div>
-                <input placeholder="Write note"  id="note" value={form.note} onChange={handleForm} onKeyPress={handleKetPress}/>
                 <label htmlFor="note">Note text</label>
+                <div>
+                    <textarea placeholder="Write note"  id="note" value={form.note} onChange={handleForm} onKeyPress={handleKetPress}/>
+                </div>
             </div>
         </div>
     );
