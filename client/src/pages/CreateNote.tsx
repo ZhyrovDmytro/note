@@ -18,17 +18,15 @@ export function CreateNote(): JSX.Element {
         setForm({...form, [input.id]: input.value})
     }
     
-    const handleKetPress = async (e: React.KeyboardEvent) => {
-        if(e.key === 'Enter') {
-            try {
-                const data = await req('/api/note/create', 'POST', {header: form.headline, text: form.note}, {Authorization:
-                    `Bearer ${auth.token}`
-                });
+    const handleKetPress = async () => {
+        try {
+            const data = await req('/api/note/create', 'POST', {header: form.headline, text: form.note}, {Authorization:
+                `Bearer ${auth.token}`
+            });
 
-                history.push(`/detail/${data.newNote._id}`);
-            } catch (e) {
-                console.log(e);
-            }
+            history.push(`/detail/${data.newNote._id}`);
+        } catch (e) {
+            console.log(e);
         }
     };
 
@@ -43,9 +41,10 @@ export function CreateNote(): JSX.Element {
             <div>
                 <label htmlFor="note">Note text</label>
                 <div>
-                    <textarea placeholder="Write note"  id="note" value={form.note} onChange={handleForm} onKeyPress={handleKetPress}/>
+                    <textarea placeholder="Write note"  id="note" value={form.note} onChange={handleForm} />
                 </div>
             </div>
+            <button onClick={handleKetPress}>create</button>
         </div>
     );
 }
