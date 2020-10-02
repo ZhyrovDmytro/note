@@ -56,8 +56,9 @@ router.get(
   auth,
   async (req: CreateNoteRequest, res: express.Response) => {
     try {
-      const notes = Note.findById(req.params.id);
-      res.json(notes);
+      const note = await Note.findById(req.params.id);
+
+      res.json(note);
     } catch (e) {
       res.status(500).json({ message: 'Something went wrong' });
       console.error(e);
