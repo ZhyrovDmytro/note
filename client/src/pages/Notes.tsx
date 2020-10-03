@@ -30,7 +30,7 @@ export function Notes() {
                 <div>
                     <h1>Notes</h1>
                     {loading && <p>Loading...</p>}
-                    {notes.map((note: NoteItemProps) => <NoteItem header={note.header} text={note.text} key={note.header} />)}
+                    {notes.map((note: NoteItemProps) => <NoteItem header={note.header} text={note.text} key={note.header} id={note.id}/>)}
                 </div>
                 ) : <p>You have no notes</p>
             }

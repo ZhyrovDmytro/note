@@ -66,4 +66,23 @@ router.get(
   }
 );
 
+router.delete(
+  '/:id/',
+  auth,
+  async (req: CreateNoteRequest, res: express.Response) => {
+    try {
+      const data = await Note.findByIdAndRemove(req.params.id);
+
+      if (!data) {
+        res.status(403).json({ message: 'Can"t delete' });
+      } else {
+        res.status(200).json({ message: 'Deleted' });
+      }
+    } catch (e) {
+      res.status(500).json({ message: 'Something went wrong' });
+      console.error(e);
+    }
+  }
+);
+
 module.exports = router;
