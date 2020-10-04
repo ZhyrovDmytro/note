@@ -67,7 +67,7 @@ router.get(
 );
 
 router.delete(
-  '/:id/',
+  '/:id',
   auth,
   async (req: CreateNoteRequest, res: express.Response) => {
     try {

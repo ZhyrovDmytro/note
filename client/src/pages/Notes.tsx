@@ -5,7 +5,7 @@ import {AuthContext} from '../context/AuthContext';
 import {useHTTP} from '../hooks/useHTTP';
 
 export function Notes() {
-    const [notes, setNotes] = React.useState([]);
+    const [notes, setNotes] = React.useState<NoteItemProps[]>();
     const {req, loading} = useHTTP();
     const auth = useContext(AuthContext);
 
@@ -24,13 +24,20 @@ export function Notes() {
         fetchNotes();
     }, [fetchNotes]);
 
+    const removeNote = React.useCallback(async (id: string) => {
+        const upd = notes.filter(i => i._id !== id);
+        setNotes(upd);
+    }, [notes]);
+
+
     return (
         <>
             {notes ? (
                 <div>
                     <h1>Notes</h1>
+                    <hr />
                     {loading && <p>Loading...</p>}
-                    {notes.map((note: NoteItemProps) => <NoteItem header={note.header} text={note.text} key={note.header} id={note.id}/>)}
+                    {notes.map((note: NoteItemProps) => <NoteItem {...note} key={note._id} removeNote={removeNote} />)}
                 </div>
                 ) : <p>You have no notes</p>
             }

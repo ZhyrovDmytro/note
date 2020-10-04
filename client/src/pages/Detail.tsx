@@ -12,7 +12,7 @@ interface NoteProps {
 }
 export function Detail(): JSX.Element {
     const {req, loading} = useHTTP();
-    const [note, setNote] = React.useState<NoteProps>({});
+    const [note, setNote] = React.useState<NoteProps>({_id: "", date: undefined, header: "", owner: "", text: ""});
     const auth = React.useContext(AuthContext);
     const noteId = useParams();
 
@@ -34,6 +34,7 @@ export function Detail(): JSX.Element {
                     {note.header}
                 </h2>
                 <p>{note.text}</p>
+                <span style={{fontStyle: 'italic'}}>{note.date}</span>
             </div>
         )
     )
