@@ -1,5 +1,6 @@
 import {useContext} from 'react';
 import * as React from 'react';
+import {MarkedInput} from '../components/MarkedInput';
 import {AuthContext} from '../context/AuthContext';
 import {useHTTP} from '../hooks/useHTTP';
 import {useHistory} from 'react-router-dom';
@@ -43,6 +44,7 @@ export function CreateNote(): JSX.Element {
                 <div>
                     <textarea placeholder="Write note"  id="note" value={form.note} onChange={handleForm} />
                 </div>
+                <MarkedInput />
             </div>
             <button onClick={handleKetPress}>create</button>
         </div>
