@@ -14,9 +14,14 @@ export function CreateNote(): JSX.Element {
     const [form, setForm] = React.useState({
         headline: '', note: ''
     });
+
     function handleForm(e: React.FormEvent<HTMLTextAreaElement | HTMLInputElement>) {
         const input = e.target as HTMLInputElement;
         setForm({...form, [input.id]: input.value})
+    }
+
+    function handleNoteValue(note: string, id: string) {
+        setForm({...form, [id]: note})
     }
     
     const handleKetPress = async () => {
@@ -40,11 +45,7 @@ export function CreateNote(): JSX.Element {
                 </div>
             </div>
             <div>
-                <label htmlFor="note">Note text</label>
-                <div>
-                    <textarea placeholder="Write note"  id="note" value={form.note} onChange={handleForm} />
-                </div>
-                <MarkedInput />
+                <MarkedInput handleNoteValue={handleNoteValue}/>
             </div>
             <button onClick={handleKetPress}>create</button>
         </div>

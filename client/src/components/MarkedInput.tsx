@@ -1,14 +1,19 @@
-import {Attributes, KeyboardEventHandler} from 'react';
+import {Attributes} from 'react';
 import * as React from 'react';
 import { createEditor, Node, Transforms, Editor, Text } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 import Icon from 'react-icons-kit';
-import {bold} from 'react-icons-kit/feather/bold'
-import {code} from 'react-icons-kit/feather/code'
-import {underline} from 'react-icons-kit/feather/underline'
-import {italic} from 'react-icons-kit/feather/italic'
+import {bold} from 'react-icons-kit/feather/bold';
+import {code} from 'react-icons-kit/feather/code';
+import {underline} from 'react-icons-kit/feather/underline';
+import {italic} from 'react-icons-kit/feather/italic';
+import {list} from 'react-icons-kit/feather/list';
 
-const CodeElement = (props: any) => {
+interface RichTextEditorProps {
+    handleNoteValue(note: string, id: string): void;
+}
+
+const CodeElement = (props: any): JSX.Element => {
     return (
         <pre {...props.attributes}>
       <code>{props.children}</code>
@@ -16,7 +21,15 @@ const CodeElement = (props: any) => {
     )
 };
 
-interface LeafProps {
+const ListElement = (props: any): JSX.Element => {
+    return (
+        <ul {...props.attributes}>
+            <li>{props.children}</li>
+        </ul>
+    )
+};
+
+export interface LeafProps {
     children: Node[];
     attributes: Attributes;
     leaf: any;
@@ -54,6 +67,13 @@ const CustomEditor = {
 
         return !!match
     },
+    isListBlockActive(editor: Editor) {
+        const [match] = Editor.nodes(editor, {
+            match: n => n.type === 'list',
+        });
+
+        return !!match
+    },
     toggleBoldMark(editor: Editor) {
         const isActive = CustomEditor.isBoldMarkActive(editor);
         Transforms.setNodes(
@@ -86,6 +106,24 @@ const CustomEditor = {
             { match: n => Editor.isBlock(editor, n) }
         )
     },
+    toggleListBlock(editor: Editor) {
+        const isActive = CustomEditor.isListBlockActive(editor);
+        Transforms.setNodes(
+            editor,
+            { type: isActive ? null : 'list' },
+            { match: n => Editor.isBlock(editor, n) }
+        )
+    },
+};
+
+export const serialize = (value: any) => {
+    return (
+        value
+        // Return the string content of each paragraph in the value's children.
+            .map((n: any) => Node.string(n))
+            // Join them all with line breaks denoting paragraphs.
+            .join('\n')
+    );
 };
 
 
@@ -107,7 +145,7 @@ const Leaf = (props: LeafProps) => {
     )
 };
 
-export function MarkedInput(): JSX.Element {
+export function MarkedInput(props: RichTextEditorProps): JSX.Element {
     const editor = React.useMemo(() => withReact(createEditor()), []);
     const [value, setValue] = React.useState<Node[]>([
         {
@@ -120,6 +158,8 @@ export function MarkedInput(): JSX.Element {
         switch (props.element.type) {
             case 'code':
                 return <CodeElement {...props} />;
+            case 'list':
+                return <ListElement {...props} />;
             default:
                 return <DefaultElement {...props} />
         }
@@ -128,6 +168,11 @@ export function MarkedInput(): JSX.Element {
     const renderLeaf = React.useCallback(props => {
         return <Leaf {...props} />
     }, []);
+
+    function handleChange(newValue: Node[]): void {
+        setValue(newValue);
+        props.handleNoteValue(serialize(value), 'note');
+    }
 
     const handleKeyPress = (e: KeyboardEvent): void => {
         if (!e.ctrlKey) {
@@ -162,7 +207,7 @@ export function MarkedInput(): JSX.Element {
     };
 
     return (
-        <Slate editor={editor} value={value} onChange={newValue => setValue(newValue)}>
+        <Slate editor={editor} value={value} onChange={newValue => handleChange(newValue)}>
             <div>
                 <button
                     onMouseDown={event => {
@@ -187,6 +232,14 @@ export function MarkedInput(): JSX.Element {
                     }}
                 >
                     <Icon icon={underline} />
+                </button>
+                <button
+                    onMouseDown={event => {
+                        event.preventDefault();
+                        CustomEditor.toggleListBlock(editor)
+                    }}
+                >
+                    <Icon icon={list} />
                 </button>
                 <button
                     onMouseDown={event => {

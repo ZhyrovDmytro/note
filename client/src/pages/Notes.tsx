@@ -29,7 +29,6 @@ export function Notes() {
         setNotes(upd);
     }, [notes]);
 
-
     return (
         <>
             {notes ? (
