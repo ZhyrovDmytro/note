@@ -1,6 +1,6 @@
 import {useContext} from 'react';
 import * as React from 'react';
-import {MarkedInput} from '../components/MarkedInput';
+import {RichText} from '../components/RichText';
 import {AuthContext} from '../context/AuthContext';
 import {useHTTP} from '../hooks/useHTTP';
 import {useHistory} from 'react-router-dom';
@@ -24,7 +24,7 @@ export function CreateNote(): JSX.Element {
         setForm({...form, [id]: note})
     }
     
-    const handleKetPress = async () => {
+    const handleKeyPress = async () => {
         try {
             const data = await req('/api/note/create', 'POST', {header: form.headline, text: form.note}, {Authorization:
                 `Bearer ${auth.token}`
@@ -45,9 +45,9 @@ export function CreateNote(): JSX.Element {
                 </div>
             </div>
             <div>
-                <MarkedInput handleNoteValue={handleNoteValue}/>
+                <RichText handleNoteValue={handleNoteValue}/>
             </div>
-            <button onClick={handleKetPress}>create</button>
+            <button onClick={handleKeyPress}>create</button>
         </div>
     );
 }

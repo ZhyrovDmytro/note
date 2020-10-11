@@ -9,8 +9,10 @@ import {underline} from 'react-icons-kit/feather/underline';
 import {italic} from 'react-icons-kit/feather/italic';
 import {list} from 'react-icons-kit/feather/list';
 
+// TODO: refactoring needed
 interface RichTextEditorProps {
-    handleNoteValue(note: string, id: string): void;
+    value?: Node[];
+    handleNoteValue?(note: string, id: string): void;
 }
 
 const CodeElement = (props: any): JSX.Element => {
@@ -116,17 +118,6 @@ const CustomEditor = {
     },
 };
 
-export const serialize = (value: any) => {
-    return (
-        value
-        // Return the string content of each paragraph in the value's children.
-            .map((n: any) => Node.string(n))
-            // Join them all with line breaks denoting paragraphs.
-            .join('\n')
-    );
-};
-
-
 const DefaultElement = (props: any) => {
     return <p {...props.attributes}>{props.children}</p>
 };
@@ -145,14 +136,21 @@ const Leaf = (props: LeafProps) => {
     )
 };
 
-export function MarkedInput(props: RichTextEditorProps): JSX.Element {
+export function RichText(props: RichTextEditorProps): JSX.Element {
     const editor = React.useMemo(() => withReact(createEditor()), []);
     const [value, setValue] = React.useState<Node[]>([
         {
             type: 'paragraph',
-            children: [{ text: 'A line of text in a paragraph.' }],
+            children: [{ text: 'Write note here...' }],
         },
     ]);
+    const readOnly = Boolean(props.value);
+
+    React.useEffect(() => {
+        if(readOnly) {
+            setValue(props.value);
+        }
+    },[]);
 
     const renderElement = React.useCallback(props => {
         switch (props.element.type) {
@@ -171,7 +169,7 @@ export function MarkedInput(props: RichTextEditorProps): JSX.Element {
 
     function handleChange(newValue: Node[]): void {
         setValue(newValue);
-        props.handleNoteValue(serialize(value), 'note');
+        props.handleNoteValue(JSON.stringify(newValue), 'note');
     }
 
     const handleKeyPress = (e: KeyboardEvent): void => {
@@ -208,7 +206,7 @@ export function MarkedInput(props: RichTextEditorProps): JSX.Element {
 
     return (
         <Slate editor={editor} value={value} onChange={newValue => handleChange(newValue)}>
-            <div>
+            {!readOnly && (<div>
                 <button
                     onMouseDown={event => {
                         event.preventDefault();
@@ -249,8 +247,8 @@ export function MarkedInput(props: RichTextEditorProps): JSX.Element {
                 >
                     <Icon icon={code} />
                 </button>
-            </div>
-            <Editable renderElement={renderElement} renderLeaf={renderLeaf} onKeyDown={(event: KeyboardEvent) => handleKeyPress(event)}/>
+            </div>)}
+            <Editable readOnly={readOnly} renderElement={renderElement} renderLeaf={renderLeaf} onKeyDown={(event: KeyboardEvent) => handleKeyPress(event)}/>
         </Slate>
     )
 }
