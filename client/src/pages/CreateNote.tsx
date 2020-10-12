@@ -1,6 +1,6 @@
 import {useContext} from 'react';
 import * as React from 'react';
-import {RichText} from '../components/RichText';
+import {RichtextEditor} from '../components/richtext/RichtextEditor';
 import {AuthContext} from '../context/AuthContext';
 import {useHTTP} from '../hooks/useHTTP';
 import {useHistory} from 'react-router-dom';
@@ -45,7 +45,7 @@ export function CreateNote(): JSX.Element {
                 </div>
             </div>
             <div>
-                <RichText handleNoteValue={handleNoteValue}/>
+                <RichtextEditor handleNoteValue={handleNoteValue}/>
             </div>
             <button onClick={handleKeyPress}>create</button>
         </div>
