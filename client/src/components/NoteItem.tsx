@@ -2,7 +2,7 @@ import * as React from 'react';
 import {AuthContext} from '../context/AuthContext';
 import {useHTTP} from '../hooks/useHTTP';
 import {useToast} from '../hooks/useToast';
-import {RichText} from './RichText';
+import {RichtextEditor} from './richtext/RichtextEditor';
 
 export interface NoteItemProps {
     header: string;
@@ -41,7 +41,7 @@ export function NoteItem(props: NoteItemProps): JSX.Element {
                     {props.header}
                 </h2>
                 <div>
-                    <RichText value={noteData} />
+                    <RichtextEditor value={noteData} />
                 </div>
             </div>
             <div>
