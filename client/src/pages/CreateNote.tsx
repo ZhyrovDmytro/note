@@ -32,7 +32,7 @@ export function CreateNote(): JSX.Element {
 
             history.push(`/detail/${data.newNote._id}`);
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
     };
 
