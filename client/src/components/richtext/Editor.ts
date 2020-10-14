@@ -40,6 +40,34 @@ export const CustomEditor = {
 
     return !!match;
   },
+  // isQuoteBlockActive(editor: Editor) {
+  //   const [match] = Editor.nodes(editor, {
+  //     match: (n) => n.type === 'quote'
+  //   });
+  //
+  //   return !!match;
+  // },
+  isHeadlineBlockActive(editor: Editor) {
+    const [match] = Editor.nodes(editor, {
+      match: (n) => n.type === 'h2'
+    });
+
+    return !!match;
+  },
+  isSubHeadlineBlockActive(editor: Editor) {
+    const [match] = Editor.nodes(editor, {
+      match: (n) => n.type === 'h3'
+    });
+
+    return !!match;
+  },
+  isParagraphBlockActive(editor: Editor) {
+    const [match] = Editor.nodes(editor, {
+      match: (n) => n.type === 'h3'
+    });
+
+    return !!match;
+  },
   toggleBoldMark(editor: Editor) {
     const isActive = CustomEditor.isBoldMarkActive(editor);
     Transforms.setNodes(
@@ -78,6 +106,38 @@ export const CustomEditor = {
       editor,
       { type: isActive ? null : 'list' },
       { match: (n) => Editor.isBlock(editor, n) }
+    );
+  },
+  // toggleQuoteBlock(editor: Editor) {
+  //   const isActive = CustomEditor.isQuoteBlockActive(editor);
+  //   Transforms.setNodes(
+  //       editor,
+  //       { type: isActive ? null : 'quote' },
+  //       { match: (n) => Editor.isBlock(editor, n) }
+  //   );
+  // },
+  toggleHeadlineBlock(editor: Editor) {
+    const isActive = CustomEditor.isHeadlineBlockActive(editor);
+    Transforms.setNodes(
+        editor,
+        { type: isActive ? null : 'h2' },
+        { match: (n) => Editor.isBlock(editor, n) }
+    );
+  },
+  toggleSubHeadlineBlock(editor: Editor) {
+    const isActive = CustomEditor.isSubHeadlineBlockActive(editor);
+    Transforms.setNodes(
+        editor,
+        { type: isActive ? null : 'h3' },
+        { match: (n) => Editor.isBlock(editor, n) }
+    );
+  },
+  toggleSParagraphBlock(editor: Editor) {
+    const isActive = CustomEditor.isParagraphBlockActive(editor);
+    Transforms.setNodes(
+        editor,
+        { type: isActive ? null : 'p' },
+        { match: (n) => Editor.isBlock(editor, n) }
     );
   }
 };

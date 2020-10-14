@@ -3,7 +3,7 @@ import { createEditor, Node} from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 import {CustomEditor} from './Editor';
 import {Leaf} from './LeafRichtext';
-import {CodeElement, ListElement} from './richtext-elements';
+import {CodeElement, DefaultElement, ListElement} from './richtext-elements';
 import {ToolbarRichtext} from './ToolbarRichtext';
 
 interface RichTextEditorProps {
@@ -21,10 +21,6 @@ export function RichtextEditor(props: RichTextEditorProps): JSX.Element {
     ]);
     const readOnly = Boolean(props.value);
 
-    const DefaultElement = (props: any) => {
-        return <p {...props.attributes}>{props.children}</p>
-    };
-
     React.useEffect(() => {
         if(readOnly) {
             setValue(props.value);
@@ -37,6 +33,14 @@ export function RichtextEditor(props: RichTextEditorProps): JSX.Element {
                 return <CodeElement {...props} />;
             case 'list':
                 return <ListElement {...props} />;
+            case 'h2':
+                return <h2>{props.children}</h2>;
+            case 'h3':
+                return <h3>{props.children}</h3>;
+            case 'p':
+                return <DefaultElement {...props} />;
+            // case 'quote':
+            //     return <blockquote>{props.children}</blockquote>;
             default:
                 return <DefaultElement {...props} />
         }

@@ -15,3 +15,8 @@ export const ListElement = (props: any): JSX.Element => {
         </ul>
     )
 };
+
+
+export const DefaultElement = (props: any) => {
+    return <p {...props.attributes}>{props.children}</p>
+};
