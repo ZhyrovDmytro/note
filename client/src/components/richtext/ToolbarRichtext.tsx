@@ -21,7 +21,7 @@ export function ToolbarRichtext(props: ToolbarRichtextProps): JSX.Element {
     return (
         <div>
             <button
-                onMouseDown={event => {
+                onClick={event => {
                     event.preventDefault();
                     CustomEditor.toggleBoldMark(editor)
                 }}
@@ -29,7 +29,7 @@ export function ToolbarRichtext(props: ToolbarRichtextProps): JSX.Element {
                 <Icon icon={bold} />
             </button>
             <button
-                onMouseDown={event => {
+                onClick={event => {
                     event.preventDefault();
                     CustomEditor.toggleItalicMark(editor)
                 }}
@@ -37,7 +37,7 @@ export function ToolbarRichtext(props: ToolbarRichtextProps): JSX.Element {
                 <Icon icon={italic} />
             </button>
             <button
-                onMouseDown={event => {
+                onClick={event => {
                     event.preventDefault();
                     CustomEditor.toggleUnderlineMark(editor)
                 }}
@@ -45,7 +45,7 @@ export function ToolbarRichtext(props: ToolbarRichtextProps): JSX.Element {
                 <Icon icon={underline} />
             </button>
             <button
-                onMouseDown={event => {
+                onClick={event => {
                     event.preventDefault();
                     CustomEditor.toggleListBlock(editor)
                 }}
@@ -53,7 +53,7 @@ export function ToolbarRichtext(props: ToolbarRichtextProps): JSX.Element {
                 <Icon icon={list} />
             </button>
             <button
-                onMouseDown={event => {
+                onClick={event => {
                     event.preventDefault();
                     CustomEditor.toggleCodeBlock(editor)
                 }}
@@ -69,7 +69,7 @@ export function ToolbarRichtext(props: ToolbarRichtextProps): JSX.Element {
             {/*    <Icon icon={feather} />*/}
             {/*</button>*/}
             <button
-                onMouseDown={event => {
+                onClick={event => {
                     event.preventDefault();
                     CustomEditor.toggleHeadlineBlock(editor)
                 }}
@@ -77,7 +77,7 @@ export function ToolbarRichtext(props: ToolbarRichtextProps): JSX.Element {
                 <Icon icon={ic_title} />
             </button>
             <button
-                onMouseDown={event => {
+                onClick={event => {
                     event.preventDefault();
                     CustomEditor.toggleSubHeadlineBlock(editor)
                 }}
@@ -85,7 +85,7 @@ export function ToolbarRichtext(props: ToolbarRichtextProps): JSX.Element {
                 <Icon icon={ic_text_fields} />
             </button>
             <button
-                onMouseDown={event => {
+                onClick={event => {
                     event.preventDefault();
                     CustomEditor.toggleSParagraphBlock(editor)
                 }}
