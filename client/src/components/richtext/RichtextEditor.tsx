@@ -39,8 +39,8 @@ export function RichtextEditor(props: RichTextEditorProps): JSX.Element {
                 return <h3>{props.children}</h3>;
             case 'p':
                 return <DefaultElement {...props} />;
-            // case 'quote':
-            //     return <blockquote>{props.children}</blockquote>;
+            case 'quote':
+                return <blockquote style={{ background: '#eee'}}>{props.children}</blockquote>;
             default:
                 return <DefaultElement {...props} />
         }
