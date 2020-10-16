@@ -40,13 +40,13 @@ export const CustomEditor = {
 
     return !!match;
   },
-  // isQuoteBlockActive(editor: Editor) {
-  //   const [match] = Editor.nodes(editor, {
-  //     match: (n) => n.type === 'quote'
-  //   });
-  //
-  //   return !!match;
-  // },
+  isQuoteBlockActive(editor: Editor) {
+    const [match] = Editor.nodes(editor, {
+      match: (n) => n.type === 'quote'
+    });
+
+    return !!match;
+  },
   isHeadlineBlockActive(editor: Editor) {
     const [match] = Editor.nodes(editor, {
       match: (n) => n.type === 'h2'
@@ -63,29 +63,31 @@ export const CustomEditor = {
   },
   isParagraphBlockActive(editor: Editor) {
     const [match] = Editor.nodes(editor, {
-      match: (n) => n.type === 'h3'
+      match: (n) => n.type === 'p'
     });
 
     return !!match;
   },
-  toggleBoldMark(editor: Editor) {
-    const isActive = CustomEditor.isBoldMarkActive(editor);
+  toggleBoldMark(editor: Editor, reset: boolean = false) {
+    const isActive = !reset ? CustomEditor.isBoldMarkActive(editor) : reset;
     Transforms.setNodes(
       editor,
       { bold: isActive ? null : true },
       { match: (n) => Text.isText(n), split: true }
     );
   },
-  toggleItalicMark(editor: Editor) {
-    const isActive = CustomEditor.isItalicMarkActive(editor);
+  toggleItalicMark(editor: Editor, reset: boolean = false) {
+    const isActive = !reset ? CustomEditor.isItalicMarkActive(editor) : reset;
     Transforms.setNodes(
       editor,
       { italic: isActive ? null : true },
       { match: (n) => Text.isText(n), split: true }
     );
   },
-  toggleUnderlineMark(editor: Editor) {
-    const isActive = CustomEditor.isUnderlinedMarkActive(editor);
+  toggleUnderlineMark(editor: Editor, reset: boolean = false) {
+    const isActive = !reset
+      ? CustomEditor.isUnderlinedMarkActive(editor)
+      : reset;
     Transforms.setNodes(
       editor,
       { underline: isActive ? null : true },
@@ -108,36 +110,41 @@ export const CustomEditor = {
       { match: (n) => Editor.isBlock(editor, n) }
     );
   },
-  // toggleQuoteBlock(editor: Editor) {
-  //   const isActive = CustomEditor.isQuoteBlockActive(editor);
-  //   Transforms.setNodes(
-  //       editor,
-  //       { type: isActive ? null : 'quote' },
-  //       { match: (n) => Editor.isBlock(editor, n) }
-  //   );
-  // },
+  toggleQuoteBlock(editor: Editor) {
+    const isActive = CustomEditor.isQuoteBlockActive(editor);
+    Transforms.setNodes(
+      editor,
+      { type: isActive ? null : 'quote' },
+      { match: (n) => Editor.isBlock(editor, n) }
+    );
+  },
   toggleHeadlineBlock(editor: Editor) {
     const isActive = CustomEditor.isHeadlineBlockActive(editor);
     Transforms.setNodes(
-        editor,
-        { type: isActive ? null : 'h2' },
-        { match: (n) => Editor.isBlock(editor, n) }
+      editor,
+      { type: isActive ? null : 'h2' },
+      { match: (n) => Editor.isBlock(editor, n) }
     );
   },
   toggleSubHeadlineBlock(editor: Editor) {
     const isActive = CustomEditor.isSubHeadlineBlockActive(editor);
     Transforms.setNodes(
-        editor,
-        { type: isActive ? null : 'h3' },
-        { match: (n) => Editor.isBlock(editor, n) }
+      editor,
+      { type: isActive ? null : 'h3' },
+      { match: (n) => Editor.isBlock(editor, n) }
     );
   },
-  toggleSParagraphBlock(editor: Editor) {
+  toggleParagraphBlock(editor: Editor) {
     const isActive = CustomEditor.isParagraphBlockActive(editor);
     Transforms.setNodes(
         editor,
         { type: isActive ? null : 'p' },
         { match: (n) => Editor.isBlock(editor, n) }
     );
+  },
+  resetStyles(editor: Editor) {
+    this.toggleBoldMark(editor, true);
+    this.toggleUnderlineMark(editor, true);
+    this.toggleItalicMark(editor, true);
   }
 };
