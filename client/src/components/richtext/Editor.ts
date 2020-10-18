@@ -137,9 +137,9 @@ export const CustomEditor = {
   toggleParagraphBlock(editor: Editor) {
     const isActive = CustomEditor.isParagraphBlockActive(editor);
     Transforms.setNodes(
-        editor,
-        { type: isActive ? null : 'p' },
-        { match: (n) => Editor.isBlock(editor, n) }
+      editor,
+      { type: isActive ? null : 'p' },
+      { match: (n) => Editor.isBlock(editor, n) }
     );
   },
   resetStyles(editor: Editor) {
