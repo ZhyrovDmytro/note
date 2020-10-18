@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useHistory} from 'react-router-dom';
 import {AuthContext} from '../context/AuthContext';
 import {useHTTP} from '../hooks/useHTTP';
 import {useToast} from '../hooks/useToast';
@@ -21,6 +22,11 @@ export function NoteItem(props: NoteItemProps): JSX.Element {
     const auth = React.useContext(AuthContext);
     const toast = useToast();
     const noteData = JSON.parse(props.text);
+    const history = useHistory();
+
+    function openDetail() {
+        history.push(`/detail/${props._id}`);
+    }
 
     const handleDelete = React.useCallback(async () => {
         try {
@@ -37,7 +43,7 @@ export function NoteItem(props: NoteItemProps): JSX.Element {
     return (
         <div style={style}>
             <div style={{marginRight: '20px'}}>
-                <h2>
+                <h2 onClick={openDetail} style={{cursor: 'pointer'}}>
                     {props.header}
                 </h2>
                 <div>

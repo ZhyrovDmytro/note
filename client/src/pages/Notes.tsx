@@ -1,5 +1,6 @@
 import {useContext} from 'react';
 import * as React from 'react';
+import {Link} from 'react-router-dom';
 import {NoteItem, NoteItemProps} from '../components/NoteItem';
 import {AuthContext} from '../context/AuthContext';
 import {useHTTP} from '../hooks/useHTTP';
@@ -18,7 +19,7 @@ export function Notes() {
         } catch (e) {
             console.error(e);
         }
-    }, [auth]);
+    }, [auth, req]);
 
     React.useEffect( () => {
         fetchNotes();
@@ -31,14 +32,19 @@ export function Notes() {
 
     return (
         <>
-            {notes ? (
+            {notes && notes.length ? (
                 <div>
                     <h1>Notes</h1>
                     <hr />
                     {loading && <p>Loading...</p>}
                     {notes.map((note: NoteItemProps) => <NoteItem {...note} key={note._id} removeNote={removeNote} />)}
                 </div>
-                ) : <p>You have no notes</p>
+            ) : (
+                <>
+                    <h2>You have no notes :(</h2>
+                    <p>Create note <Link to="/create">here</Link></p>
+                </>
+            )
             }
         </>)
 }
