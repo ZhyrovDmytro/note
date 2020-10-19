@@ -1,3 +1,4 @@
+import {Button, Card, CardActions, CardContent, Grid, Paper, Typography} from '@material-ui/core';
 import * as React from 'react';
 import {useHistory} from 'react-router-dom';
 import {AuthContext} from '../context/AuthContext';
@@ -11,11 +12,6 @@ export interface NoteItemProps {
     _id: string;
     removeNote(id: string): void
 }
-
-const style = {
-    display: 'flex',
-    alignItems: 'center'
-};
 
 export function NoteItem(props: NoteItemProps): JSX.Element {
     const {req} = useHTTP();
@@ -41,18 +37,19 @@ export function NoteItem(props: NoteItemProps): JSX.Element {
     }, []);
 
     return (
-        <div style={style}>
-            <div style={{marginRight: '20px'}}>
-                <h2 onClick={openDetail} style={{cursor: 'pointer'}}>
-                    {props.header}
-                </h2>
+        <Paper >
+            <Card>
+                <CardContent>
+                <Typography variant="h4" component="h4"> {props.header}</Typography>
                 <div>
                     <RichtextEditor value={noteData} />
                 </div>
-            </div>
-            <div>
-                <button onClick={handleDelete}>X</button>
-            </div>
-        </div>
+                </CardContent>
+                <CardActions>
+                    <Button size="small" onClick={openDetail}>More</Button>
+                    <Button size="small" onClick={handleDelete}>Delete</Button>
+                </CardActions>
+            </Card>
+        </Paper>
     )
 }

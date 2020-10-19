@@ -1,6 +1,7 @@
-import {AnchorHTMLAttributes, useContext} from 'react';
+import {AppBar, Toolbar, Typography, Link as MLink, Grid} from '@material-ui/core';
+import {useContext} from 'react';
 import * as React from 'react';
-import {Link, useHistory} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import {AuthContext} from './context/AuthContext';
 
 export function Topbar(): JSX.Element {
@@ -14,14 +15,30 @@ export function Topbar(): JSX.Element {
         history.push('/');
     }
     return (
-        <nav>
-            <Link to="/notes">Home</Link>
-            {isLogedIn && (
-                <>
-                    <Link to="/create">Create</Link>
-                    <a href="/" onClick={handleLogout}>Logout</a>
-                </>
-            )}
-        </nav>
+        <AppBar position="static">
+            <Toolbar>
+                <Grid container justify='space-between' direction='row'>
+                    <div>
+                        <Grid item xs={1}>
+                            <MLink href="/notes" color="secondary">
+                                Home
+                            </MLink>
+                        </Grid>
+                    </div>
+                    {isLogedIn && (
+                        <Grid item>
+                            <Grid container justify='space-between'>
+                                <MLink href="/create" color="secondary">
+                                    Create
+                                </MLink>{' '}
+                                <MLink href="/" onClick={handleLogout} color="secondary">
+                                    Logout
+                                </MLink>
+                            </Grid>
+                        </Grid>
+                    )}
+                </Grid>
+            </Toolbar>
+        </AppBar>
     );
 }

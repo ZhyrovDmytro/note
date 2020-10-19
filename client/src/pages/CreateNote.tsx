@@ -1,3 +1,4 @@
+import {Button, TextField, Typography} from '@material-ui/core';
 import {useContext} from 'react';
 import * as React from 'react';
 import {RichtextEditor} from '../components/richtext/RichtextEditor';
@@ -38,16 +39,14 @@ export function CreateNote(): JSX.Element {
 
     return (
         <div>
+            <Typography variant='h2'>Create note</Typography>
             <div>
-                <label htmlFor="headline">Headline text</label>
-                <div>
-                    <input placeholder="Write headline"  id="headline" value={form.headline} onChange={handleForm}/>
-                </div>
+                <TextField id="headline" label="Headline" onChange={handleForm} value={form.headline} />
             </div>
             <div>
                 <RichtextEditor handleNoteValue={handleNoteValue}/>
             </div>
-            <button onClick={handleKeyPress}>create</button>
+            <Button variant="outlined" onClick={handleKeyPress}>create</Button>
         </div>
     );
 }
