@@ -1,3 +1,5 @@
+import {Grid, GridList, Typography} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
 import {useContext} from 'react';
 import * as React from 'react';
 import {Link} from 'react-router-dom';
@@ -9,6 +11,25 @@ export function Notes() {
     const [notes, setNotes] = React.useState<NoteItemProps[]>();
     const {req, loading} = useHTTP();
     const auth = useContext(AuthContext);
+
+    const useStyles = makeStyles((theme) => ({
+        root: {
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-around',
+            overflow: 'hidden',
+            backgroundColor: theme.palette.background.paper,
+        },
+        gridList: {
+            width: 500,
+            height: 450,
+        },
+        icon: {
+            color: 'rgba(255, 255, 255, 0.54)',
+        },
+    }));
+
+    const classes = useStyles();
 
     const fetchNotes = React.useCallback(async () => {
         try {
@@ -34,17 +55,26 @@ export function Notes() {
         <>
             {notes && notes.length ? (
                 <div>
-                    <h1>Notes</h1>
+                    <Typography variant="h2" component="h1">Notes</Typography>
                     <hr />
-                    {loading && <p>Loading...</p>}
-                    {notes.map((note: NoteItemProps) => <NoteItem {...note} key={note._id} removeNote={removeNote} />)}
+                    {loading && <Typography>Loading...</Typography>}
+                    <Grid container className={classes.root} spacing={1}>
+                        <Grid item xs={12}>
+                            <Grid container spacing={3} alignItems={'flex-start'} alignContent={'flex-start'}>
+                                {notes.map((note: NoteItemProps) => (
+                                    <Grid key={note._id} item>
+                                        <NoteItem {...note} key={note._id} removeNote={removeNote} />
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </div>
             ) : (
                 <>
-                    <h2>You have no notes :(</h2>
-                    <p>Create note <Link to="/create">here</Link></p>
+                    <Typography variant="h3" component="h3">You have no notes :(</Typography>
+                    <Typography>Create note <Link to="/create">here</Link></Typography>
                 </>
-            )
-            }
+            )}
         </>)
 }
