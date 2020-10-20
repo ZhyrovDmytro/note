@@ -1,5 +1,8 @@
-import {useContext} from 'react';
+import {Box, Button, Grid, Paper, TextField} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
+import {ChangeEvent, useContext} from 'react';
 import * as React from 'react';
+import {useStyles} from '../components/style-helper';
 import {AuthContext} from '../context/AuthContext';
 import {useHTTP} from '../hooks/useHTTP';
 import {useToast} from '../hooks/useToast';
@@ -11,13 +14,14 @@ export function Auth() {
     const toast = useToast();
     const {login} = useContext(AuthContext);
     const {loading, req, err, clearErr} = useHTTP();
+    const classes = useStyles();
 
     React.useEffect(() => {
         toast(err);
         clearErr();
     }, [err, toast, clearErr]);
 
-    function handleForm(e: React.FormEvent<HTMLInputElement>) {
+    function handleForm(e: ChangeEvent<HTMLInputElement>): void {
         const input = e.target as HTMLInputElement;
         setForm({...form, [input.id]: input.value})
     }
@@ -42,23 +46,33 @@ export function Auth() {
     }
 
     return (
-        <div>
-            <div>
-                <input placeholder="email" id="email" type="text" onChange={handleForm}/>
-                <label htmlFor="email">Email</label>
-            </div>
-            <div>
-                <input placeholder="password"  id="password" type="password" onChange={handleForm}/>
-                <label htmlFor="password">Password</label>
-            </div>
-            <div>
-                <button onClick={loginHandler}>
-                    Login
-                </button>
-                <button onClick={registerHandler} disabled={loading}>
-                    Register
-                </button>
-            </div>
+        <div className={classes.auth}>
+            <Paper elevation={2}>
+                <Box css={{padding: '20px', width: '400px'}}>
+                    <Grid container alignItems={'center'}>
+                        <Box css={{margin: '20px 0', display: 'flex'}}>
+                            <Box css={{marginRight: '10px'}}>
+                                <TextField id="email" label="Email" variant="outlined" onChange={handleForm}/>
+                            </Box>
+                            <Box>
+                                <TextField id="password" type="password" label="Password" variant="outlined" onChange={handleForm}/>
+                            </Box>
+                        </Box>
+                        <Grid container>
+                            <Box css={{marginRight: '10px'}}>
+                                <Button onClick={loginHandler} color='primary' variant='contained'>
+                                    Login
+                                </Button>
+                            </Box>
+                            <Box>
+                                <Button onClick={registerHandler} disabled={loading} color='primary' variant='outlined'>
+                                    Register
+                                </Button>
+                            </Box>
+                        </Grid>
+                    </Grid>
+                </Box>
+            </Paper>
         </div>
-    )
+    );
 }
