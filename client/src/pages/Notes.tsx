@@ -1,8 +1,9 @@
-import {Grid, GridList, Typography} from '@material-ui/core';
+import {Box, Grid, GridList, Typography} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 import {useContext} from 'react';
 import * as React from 'react';
 import {Link} from 'react-router-dom';
+import {Headline} from '../components/Headline';
 import {NoteItem, NoteItemProps} from '../components/NoteItem';
 import {AuthContext} from '../context/AuthContext';
 import {useHTTP} from '../hooks/useHTTP';
@@ -55,8 +56,7 @@ export function Notes() {
         <>
             {notes && notes.length ? (
                 <div>
-                    <Typography variant="h2" component="h1">Notes</Typography>
-                    <hr />
+                   <Headline text="Notes" />
                     {loading && <Typography>Loading...</Typography>}
                     <Grid container className={classes.root} spacing={1}>
                         <Grid item xs={12}>

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Headline} from '../components/Headline';
 import {RichtextEditor} from '../components/richtext/RichtextEditor';
 import {AuthContext} from '../context/AuthContext';
 import {useHTTP} from '../hooks/useHTTP';
@@ -38,9 +39,7 @@ export function Detail(): JSX.Element {
     return (
         loading ? <p>Loading...</p> :
             <div>
-                <h2>
-                    {note.header}
-                </h2>
+                <Headline text={note.header} />
                 {note.text && <RichtextEditor value={JSON.parse(note.text)} />}
                 <span style={{fontStyle: 'italic'}}>{note.date}</span>
             </div>

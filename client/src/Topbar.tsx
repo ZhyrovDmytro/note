@@ -20,25 +20,27 @@ export function Topbar(): JSX.Element {
         <AppBar position="static" color='primary'>
             <Toolbar>
                 <Grid container justify='space-between' direction='row'>
-                    <div>
-                        <Grid item xs={1}>
+                    <Grid item>
+                        <Grid container justify='space-between'>
                             <MLink href="/notes" color="secondary">
                                 <Typography variant="h6" className={classes.topBar}>
-                                    Home
+                                    Notes
                                 </Typography>
                             </MLink>
-                        </Grid>
-                    </div>
-                    {isLogedIn && (
-                        <Grid item>
-                            <Grid container justify='space-between'>
-                                <Box css={{marginRight: '20px'}}>
+                            {isLogedIn &&(
+                                <Box css={{marginLeft: '20px'}}>
                                     <MLink href="/create" color="secondary">
                                         <Typography variant="h6" className={classes.topBar}>
                                             Create
                                         </Typography>
                                     </MLink>
                                 </Box>
+                            )}
+                        </Grid>
+                    </Grid>
+                    {isLogedIn && (
+                        <Grid item>
+                            <Grid container justify='space-between'>
                                 <Box>
                                     <MLink href="/" onClick={handleLogout} color="secondary">
                                         <Typography variant="h6" className={classes.topBar}>
