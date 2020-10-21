@@ -1,6 +1,7 @@
 import {Button, TextField, Typography} from '@material-ui/core';
 import {useContext} from 'react';
 import * as React from 'react';
+import {Headline} from '../components/Headline';
 import {RichtextEditor} from '../components/richtext/RichtextEditor';
 import {AuthContext} from '../context/AuthContext';
 import {useHTTP} from '../hooks/useHTTP';
@@ -39,7 +40,7 @@ export function CreateNote(): JSX.Element {
 
     return (
         <div>
-            <Typography variant='h2'>Create note</Typography>
+            <Headline text="Create note" />
             <div>
                 <TextField id="headline" label="Headline" onChange={handleForm} value={form.headline} />
             </div>
