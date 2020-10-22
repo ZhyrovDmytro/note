@@ -10,7 +10,7 @@ import {useHTTP} from '../hooks/useHTTP';
 
 export function Notes() {
     const [notes, setNotes] = React.useState<NoteItemProps[]>();
-    const {req, loading} = useHTTP();
+    const {req, loading, ready} = useHTTP();
     const auth = useContext(AuthContext);
 
     const useStyles = makeStyles((theme) => ({
@@ -54,10 +54,10 @@ export function Notes() {
 
     return (
         <>
-            {notes && notes.length ? (
+            {loading && <Typography>Loading...</Typography>}
+            {ready && notes && notes.length ? (
                 <div>
                    <Headline text="Notes" />
-                    {loading && <Typography>Loading...</Typography>}
                     <Grid container className={classes.root} spacing={1}>
                         <Grid item xs={12}>
                             <Grid container spacing={3} alignItems={'flex-start'} alignContent={'flex-start'}>

@@ -7,11 +7,16 @@ import {AuthContext} from '../context/AuthContext';
 import {useHTTP} from '../hooks/useHTTP';
 import {useToast} from '../hooks/useToast';
 
+interface FormModel {
+    email: string;
+    password: string;
+}
+
 export function Auth() {
-    const [form, setForm] = React.useState({
+    const [form, setForm] = React.useState<FormModel>({
         email: '', password: ''
     });
-    const [error, setError] = React.useState({
+    const [error, setError] = React.useState<FormModel>({
         email: '', password: ''
     });
 
@@ -27,28 +32,45 @@ export function Auth() {
 
     function handleForm(e: ChangeEvent<HTMLInputElement>): void {
         const input = e.target as HTMLInputElement;
+        setError({...error, [input.id]: ''});
         setForm({...form, [input.id]: input.value});
     }
 
-    // TODO to be refactored, handle events, sumbit form, validate inputs
-    function handleBlur(e: FocusEvent): void {
-        const input = e.target as HTMLInputElement;
-        setForm({...form, [input.id]: input.value});
-        handleError();
-    }
-
-    function handleError(): void {
-        if(!form.password) {
-            setError({...error, password: "Password is required!"});
-        } else {
-            setError({...error, password: ""});
-        }
+    function formValidation(): boolean {
+        let isValid: boolean = true;
+        let errors: FormModel = {email: '', password: ''};
 
         if(!form.email) {
-            setError({...error, email: "Email  is required!"});
-        } else {
-            setError({...error, email: ""});
+            isValid = false;
+
+            errors['email'] = 'Email is required!'
         }
+
+        if (typeof form.email !== "undefined") {
+
+            const pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+            if (!pattern.test(form.email)) {
+                isValid = false;
+                errors.email = 'Please enter valid email address.';
+            }
+        }
+
+        if(!form.password) {
+            isValid = false;
+
+            errors.password = 'Password is required!'
+        }
+
+        if (typeof form.password !== "undefined") {
+            if(form.password.length < 6) {
+                isValid = false;
+                errors.password = 'Please add at least 6 character.';
+            }
+        }
+
+
+        setError(errors);
+        return isValid;
     }
 
     async function registerHandler() {
@@ -61,14 +83,14 @@ export function Auth() {
     }
 
     async function loginHandler() {
-        handleError();
-
-        try {
-            const data = await req('/api/auth/login', 'post', {...form}, {});
-            login(data.token, data.userId);
-            toast(data.message);
-        } catch (e) {
-            console.error(e);
+        if(formValidation()) {
+            try {
+                const data = await req('/api/auth/login', 'post', {...form}, {});
+                login(data.token, data.userId);
+                toast(data.message);
+            } catch (e) {
+                console.error(e);
+            }
         }
     }
 
@@ -79,10 +101,10 @@ export function Auth() {
                     <Grid container alignItems={'center'}>
                         <Box css={{margin: '20px 0', display: 'flex'}}>
                             <Box css={{marginRight: '10px'}}>
-                                <TextField id="email" label="Email" variant="outlined" onChange={handleForm} onBlur={handleBlur} error={!!error.email} helperText={error.email} />
+                                <TextField id="email" label="Email" variant="outlined" onChange={handleForm}  error={!!error.email} helperText={error.email} />
                             </Box>
                             <Box>
-                                <TextField id="password" type="password" label="Password" variant="outlined" onChange={handleForm} error={!!error.password} helperText={error.password} onBlur={handleBlur}/>
+                                <TextField id="password" type="password" label="Password" variant="outlined" onChange={handleForm} error={!!error.password} helperText={error.password} />
                             </Box>
                         </Box>
                         <Grid container>
