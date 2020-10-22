@@ -16,7 +16,7 @@ export interface NoteItemProps {
 export function NoteItem(props: NoteItemProps): JSX.Element {
     const {req} = useHTTP();
     const auth = React.useContext(AuthContext);
-    const toast = useToast();
+    const {toast} = useToast();
     const noteData = JSON.parse(props.text);
     const history = useHistory();
 
