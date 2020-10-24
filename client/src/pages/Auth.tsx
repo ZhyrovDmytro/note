@@ -1,11 +1,10 @@
 import {Box, Button, Grid, Paper, TextField} from '@material-ui/core';
-import {makeStyles} from '@material-ui/core/styles';
 import {ChangeEvent, useContext} from 'react';
 import * as React from 'react';
 import {useStyles} from '../components/style-helper';
 import {AuthContext} from '../context/AuthContext';
 import {useHTTP} from '../hooks/useHTTP';
-import {useToast} from '../hooks/useToast';
+import {useToasts} from '../hooks/useToast';
 
 interface FormModel {
     email: string;
@@ -20,15 +19,16 @@ export function Auth() {
         email: '', password: ''
     });
 
-    const toast = useToast();
+    const { addToast } = useToasts();
+
     const {login} = useContext(AuthContext);
     const {loading, req, err, clearErr} = useHTTP();
     const classes = useStyles();
 
     React.useEffect(() => {
-        toast(err);
+        addToast(err);
         clearErr();
-    }, [err, toast, clearErr]);
+    }, [err, addToast, clearErr]);
 
     function handleForm(e: ChangeEvent<HTMLInputElement>): void {
         const input = e.target as HTMLInputElement;

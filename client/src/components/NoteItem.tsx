@@ -3,7 +3,7 @@ import * as React from 'react';
 import {useHistory} from 'react-router-dom';
 import {AuthContext} from '../context/AuthContext';
 import {useHTTP} from '../hooks/useHTTP';
-import {useToast} from '../hooks/useToast';
+import {useToasts} from '../hooks/useToast';
 import {RichtextEditor} from './richtext/RichtextEditor';
 
 export interface NoteItemProps {
@@ -16,7 +16,7 @@ export interface NoteItemProps {
 export function NoteItem(props: NoteItemProps): JSX.Element {
     const {req} = useHTTP();
     const auth = React.useContext(AuthContext);
-    const toast = useToast();
+    const { addToast } = useToasts();
     const noteData = JSON.parse(props.text);
     const history = useHistory();
 
@@ -30,7 +30,7 @@ export function NoteItem(props: NoteItemProps): JSX.Element {
                 Authorization: `Bearer ${auth.token}`
             });
             props.removeNote(props._id);
-            toast(data.message);
+            addToast(data.message);
         } catch (e) {
             console.error(e);
         }
