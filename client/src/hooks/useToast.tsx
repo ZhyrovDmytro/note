@@ -1,34 +1,73 @@
 import {Snackbar} from '@material-ui/core';
 import * as React from 'react';
+import {createPortal} from 'react-dom';
 
+// TODO to be refactoored
+let counter = 0;
 
-export const useToast = () => {
-    // const [toast, setToast] = React.useState({text: '',type: 'alert'});
-    // const [shown, setShown] = React.useState(false);
+const getUniqueId = () => `id-${counter++}`;
 
-    return React.useCallback((type): void => {
-        if(type.text) {
-            // setShown(true);
-            alert(type.text);
-        }
+const ToastsContext = React.createContext({
+    addToast: () => {
+        throw new Error('To add a toast, wrap the app in a ToastsProvider.')
+    }
+});
+
+export const ToastsProvider = (props: any) => {
+    const [toasts, setToasts] = React.useState([]);
+
+    const addToast = React.useCallback((content, options = {}) => {
+        const { autoDismiss = true } = options;
+        const toastId = getUniqueId();
+
+        const toast = {
+            id: toastId,
+            content,
+            autoDismiss,
+            remove: () => {
+                setToasts((latestToasts) => latestToasts.filter(({ id }) => id !== toastId))
+            }
+        };
+
+        setToasts((latestToasts) => [ ...latestToasts, toast ])
     }, []);
-    //
-    // const handleClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
-    //     if (reason === 'clickaway') {
-    //         return;
-    //     }
-    //
-    //     setShown(false);
-    // };
-    //
-    // return (text: string) => (<Snackbar
-    //     anchorOrigin={{
-    //         vertical: 'bottom',
-    //         horizontal: 'left',
-    //     }}
-    //     open={shown}
-    //     autoHideDuration={6000}
-    //     onClose={handleClose}
-    //     message={text}
-    // />)
+
+    const contextValue = React.useMemo(() => ({
+        addToast,
+    }), [addToast]);
+
+    return (
+        <ToastsContext.Provider value={contextValue}>
+            {props.children}
+
+            {createPortal((
+               <>
+                    {toasts.map((toast) => <Toast key={toast.id} {...toast} />)}
+                </>
+            ), document.body)}
+        </ToastsContext.Provider>
+    )
+};
+
+export const useToasts = () => {
+    return React.useContext(ToastsContext)
+};
+
+
+const Toast = ({ content, autoDismiss, remove }) => {
+    React.useEffect(() => {
+        if (autoDismiss) {
+            const timeoutHandle = setTimeout(remove, 4000);
+
+            return () => clearTimeout(timeoutHandle)
+        }
+    }, [autoDismiss, remove])
+
+    return (
+        <Snackbar
+            open={!!content}
+            onClose={remove}
+            message={content}
+        />
+    )
 };
