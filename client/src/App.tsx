@@ -2,6 +2,7 @@ import * as React from 'react';
 import {BrowserRouter as Router} from 'react-router-dom';
 
 import {AuthContext} from './context/AuthContext';
+import {ToastsProvider} from './context/ToastContext';
 import {useAuth} from './hooks/useAuth';
 import {useRoutes} from './routes';
 import {Topbar} from './Topbar';
@@ -15,15 +16,17 @@ export function App() {
         return <p>Loading...</p>
     }
     return(
-        <AuthContext.Provider value={{
-            token, login, logout, userId, isAuthenticated
-        }}>
-            <Router>
-                <Topbar/>
-                <div>
-                    {routes}
-                </div>
-            </Router>
-        </AuthContext.Provider>
+        <ToastsProvider>
+            <AuthContext.Provider value={{
+                token, login, logout, userId, isAuthenticated
+            }}>
+                <Router>
+                    <Topbar/>
+                    <div>
+                        {routes}
+                    </div>
+                </Router>
+            </AuthContext.Provider>
+        </ToastsProvider>
     )
 }
