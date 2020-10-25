@@ -30,7 +30,7 @@ export function NoteItem(props: NoteItemProps): JSX.Element {
                 Authorization: `Bearer ${auth.token}`
             });
             props.removeNote(props._id);
-            addToast(data.message);
+            addToast({text: data.message, severity: 'success'});
         } catch (e) {
             console.error(e);
         }
