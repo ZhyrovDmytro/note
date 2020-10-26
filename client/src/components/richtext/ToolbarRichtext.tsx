@@ -1,3 +1,4 @@
+import {IconButton} from '@material-ui/core';
 import * as React from 'react';
 import {Editor} from 'slate';
 import {CustomEditor} from './Editor';
@@ -21,87 +22,59 @@ export function ToolbarRichtext(props: ToolbarRichtextProps): JSX.Element {
     const {editor} = props;
     return (
         <div>
-            <button
-                onClick={event => {
-                    event.preventDefault();
-                    CustomEditor.toggleBoldMark(editor)
-                }}
-            >
-                <Icon icon={bold} />
-            </button>
-            <button
-                onClick={event => {
-                    event.preventDefault();
-                    CustomEditor.toggleItalicMark(editor)
-                }}
-            >
-                <Icon icon={italic} />
-            </button>
-            <button
-                onClick={event => {
-                    event.preventDefault();
-                    CustomEditor.toggleUnderlineMark(editor)
-                }}
-            >
-                <Icon icon={underline} />
-            </button>
-            <button
-                style={{marginRight: '10px'}}
-                onClick={event => {
-                    event.preventDefault();
-                    CustomEditor.resetStyles(editor);
-                }}
-            >
-                <Icon icon={ic_format_clear} />
-            </button>
-            <button
-                onClick={event => {
-                    event.preventDefault();
-                    CustomEditor.toggleListBlock(editor)
-                }}
-            >
-                <Icon icon={list} />
-            </button>
-            <button
-                onClick={event => {
-                    event.preventDefault();
-                    CustomEditor.toggleCodeBlock(editor)
-                }}
-            >
-                <Icon icon={code} />
-            </button>
-            <button
-                onMouseDown={event => {
-                    event.preventDefault();
-                    CustomEditor.toggleQuoteBlock(editor)
-                }}
-            >
-                <Icon icon={feather} />
-            </button>
-            <button
-                onClick={event => {
-                    event.preventDefault();
-                    CustomEditor.toggleHeadlineBlock(editor)
-                }}
-            >
-                <Icon icon={ic_title} />
-            </button>
-            <button
-                onClick={event => {
-                    event.preventDefault();
-                    CustomEditor.toggleSubHeadlineBlock(editor)
-                }}
-            >
-                <Icon icon={ic_text_fields} />
-            </button>
-            <button
-                onClick={event => {
-                    event.preventDefault();
-                    CustomEditor.toggleParagraphBlock(editor)
-                }}
-            >
-                <Icon icon={ic_clear} />
-            </button>
+            <IconButton color="primary" aria-label="upload picture" component="span" onClick={() => {
+                CustomEditor.toggleBoldMark(editor)
+            }}>
+                <Icon icon={bold} style={{height: '16px', display: 'flex'}} />
+            </IconButton>
+            <IconButton color="primary" aria-label="upload picture" component="span" onClick={() => {
+                CustomEditor.toggleItalicMark(editor)
+            }}>
+                <Icon icon={italic} style={{height: '16px', display: 'flex'}} />
+            </IconButton>
+            <IconButton color="primary" aria-label="upload picture" component="span" onClick={() => {
+                CustomEditor.toggleUnderlineMark(editor)
+            }}>
+                <Icon icon={underline} style={{height: '16px', display: 'flex'}}/>
+            </IconButton>
+            <IconButton color="primary" aria-label="upload picture" component="span"  onClick={() => {
+                CustomEditor.resetStyles(editor);
+            }}>
+                <Icon icon={ic_format_clear} style={{height: '16px', display: 'flex'}} />
+
+            </IconButton>
+            <IconButton color="primary" aria-label="upload picture" component="span"   onClick={() => {
+                CustomEditor.toggleListBlock(editor)
+            }}>
+                <Icon icon={list} style={{height: '16px', display: 'flex'}} />
+
+            </IconButton>
+            <IconButton color="primary" aria-label="upload picture" component="span"    onClick={() => {
+                CustomEditor.toggleCodeBlock(editor)
+            }}>
+                <Icon icon={code} style={{height: '16px', display: 'flex'}}/>
+
+            </IconButton>
+            <IconButton color="primary" aria-label="upload picture" component="span"  onClick={() => {
+                CustomEditor.toggleQuoteBlock(editor)
+            }}>
+                <Icon icon={feather} style={{height: '16px', display: 'flex'}}/>
+            </IconButton>
+            <IconButton color="primary" aria-label="upload picture" component="span"  onClick={() => {
+                CustomEditor.toggleHeadlineBlock(editor)
+            }}>
+                <Icon icon={ic_title} style={{height: '16px', display: 'flex'}}/>
+            </IconButton>
+            <IconButton color="primary" aria-label="upload picture" component="span"   onClick={() => {
+                CustomEditor.toggleSubHeadlineBlock(editor)
+            }}>
+                <Icon icon={ic_text_fields} style={{height: '16px', display: 'flex'}}/>
+            </IconButton>
+            <IconButton color="primary" aria-label="upload picture" component="span"    onClick={() => {
+                CustomEditor.toggleParagraphBlock(editor)
+            }}>
+                <Icon icon={ic_clear} style={{height: '16px', display: 'flex'}}/>
+            </IconButton>
         </div>
     )
 }
