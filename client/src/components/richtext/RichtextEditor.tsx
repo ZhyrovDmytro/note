@@ -1,10 +1,10 @@
-import {TextField} from '@material-ui/core';
+import {CSSProperties} from 'react';
 import * as React from 'react';
 import { createEditor, Node} from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 import {CustomEditor} from './Editor';
 import {Leaf} from './LeafRichtext';
-import {CodeElement, DefaultElement, ListElement} from './richtext-elements';
+import {Blockquote, CodeElement, DefaultElement, ListElement} from './richtext-elements';
 import {ToolbarRichtext} from './ToolbarRichtext';
 
 interface RichTextEditorProps {
@@ -17,10 +17,21 @@ export function RichtextEditor(props: RichTextEditorProps): JSX.Element {
     const [value, setValue] = React.useState<Node[]>([
         {
             type: 'paragraph',
-            children: [{ text: 'Write note here...' }],
+            children: [{ text: '' }],
         },
     ]);
     const readOnly = Boolean(props.value);
+
+    const editorStyles = {
+        outline: 'none',
+        width: '400px',
+        whiteSpace: 'pre-wrap',
+        height: '200px',
+        border: readOnly ? '' : '1px solid rgba(0, 0, 0, 0.23)',
+        borderRadius: '5px',
+        padding: '20px',
+        fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+    } as CSSProperties;
 
     React.useEffect(() => {
         if(readOnly) {
@@ -41,7 +52,7 @@ export function RichtextEditor(props: RichTextEditorProps): JSX.Element {
             case 'p':
                 return <DefaultElement {...props} />;
             case 'quote':
-                return <blockquote style={{ background: '#eee'}}>{props.children}</blockquote>;
+                return <Blockquote {...props} />;
             default:
                 return <DefaultElement {...props} />
         }
@@ -91,7 +102,7 @@ export function RichtextEditor(props: RichTextEditorProps): JSX.Element {
     return (
         <Slate editor={editor} value={value} onChange={newValue => handleChange(newValue)}>
             {!readOnly && (<ToolbarRichtext editor={editor}/>)}
-            <Editable readOnly={readOnly} renderElement={renderElement} renderLeaf={renderLeaf} onKeyDown={(event: KeyboardEvent) => handleKeyPress(event)}/>
+            <Editable style={editorStyles} readOnly={readOnly} placeholder="Write your note..." renderElement={renderElement} renderLeaf={renderLeaf} onKeyDown={(event: KeyboardEvent) => handleKeyPress(event)}/>
         </Slate>
     )
 }

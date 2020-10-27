@@ -32,22 +32,23 @@ export function NoteItem(props: NoteItemProps): JSX.Element {
             props.removeNote(props._id);
             addToast({text: data.message, severity: 'success'});
         } catch (e) {
+            addToast({text: "Error :(", severity: 'error'});
             console.error(e);
         }
     }, []);
 
     return (
-        <Paper >
+        <Paper>
             <Card>
                 <CardContent>
                 <Typography variant="h4" component="h4"> {props.header}</Typography>
-                <div>
+                <div style={{maxWidth: '250px', maxHeight: '450px', overflow: 'hidden'}}>
                     <RichtextEditor value={noteData} />
                 </div>
                 </CardContent>
                 <CardActions>
-                    <Button size="small" onClick={openDetail}>More</Button>
-                    <Button size="small" onClick={handleDelete}>Delete</Button>
+                    <Button size="small" onClick={openDetail} variant='outlined' >More</Button>
+                    <Button size="small" onClick={handleDelete} variant='contained' color='secondary'>Delete</Button>
                 </CardActions>
             </Card>
         </Paper>

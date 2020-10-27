@@ -11,7 +11,6 @@ interface ToastProps {
 export const Toast = (props: ToastProps) => {
     const {autoDismiss, remove, content} = props;
 
-    console.log(props);
     React.useEffect(() => {
         if (autoDismiss) {
             const timeoutHandle = setTimeout(remove, 4000);

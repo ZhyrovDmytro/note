@@ -19,3 +19,15 @@ export const ListElement = (props: any): JSX.Element => {
 export const DefaultElement = (props: any) => {
     return <p>{props.children}</p>
 };
+
+
+export const Blockquote = (props: any) => {
+    return (
+        <blockquote style={{
+            background:' #f9f9f9',
+            borderLeft: '10px solid #ccc',
+            margin: '1.5em 10px',
+            padding: '0.5em 10px'
+        }}><p style={{display: 'inline'}}>{props.children}</p></blockquote>
+    );
+};
