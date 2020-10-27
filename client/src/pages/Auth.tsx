@@ -26,7 +26,7 @@ export function Auth() {
     const classes = useStyles();
 
     React.useEffect(() => {
-        addToast(err);
+        addToast({text: err, severity: 'error'});
         clearErr();
     }, [err, addToast, clearErr]);
 
@@ -76,7 +76,7 @@ export function Auth() {
     async function registerHandler() {
         try {
             const data = await req('/api/auth/register', 'post', {...form}, {});
-            data && toast(data.message);
+            data && addToast({text: data.message, severity: 'success'});
         } catch (e) {
             console.error(e);
         }
@@ -87,7 +87,7 @@ export function Auth() {
             try {
                 const data = await req('/api/auth/login', 'post', {...form}, {});
                 login(data.token, data.userId);
-                toast(data.message);
+                addToast({text: data.message, severity: 'success'});
             } catch (e) {
                 console.error(e);
             }

@@ -39,12 +39,12 @@ export function CreateNote(): JSX.Element {
     };
 
     return (
-        <div>
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
             <Headline text="Create note" />
             <div>
                 <TextField id="headline" label="Headline" onChange={handleForm} value={form.headline} />
             </div>
-            <div>
+            <div style={{margin: '20px 0'}}>
                 <RichtextEditor handleNoteValue={handleNoteValue}/>
             </div>
             <Button variant="outlined" onClick={handleKeyPress}>create</Button>
