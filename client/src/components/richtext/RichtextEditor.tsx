@@ -22,16 +22,18 @@ export function RichtextEditor(props: RichTextEditorProps): JSX.Element {
     ]);
     const readOnly = Boolean(props.value);
 
-    const editorStyles = {
+    const editorStyles = (isReadOnly: boolean) => ({
         outline: 'none',
-        width: '400px',
-        whiteSpace: 'pre-wrap',
-        height: '200px',
+        width: 'auto',
+        height: 'auto',
+        maxWidth: '400px',
+        maxHeight: isReadOnly ? '200px' : 'auto',
+        minHeight: '200px',
         border: readOnly ? '' : '1px solid rgba(0, 0, 0, 0.23)',
         borderRadius: '5px',
         padding: '20px',
         fontFamily: "Roboto, Helvetica, Arial, sans-serif",
-    } as CSSProperties;
+    }) as CSSProperties;
 
     React.useEffect(() => {
         if(readOnly) {
@@ -102,7 +104,7 @@ export function RichtextEditor(props: RichTextEditorProps): JSX.Element {
     return (
         <Slate editor={editor} value={value} onChange={newValue => handleChange(newValue)}>
             {!readOnly && (<ToolbarRichtext editor={editor}/>)}
-            <Editable style={editorStyles} readOnly={readOnly} placeholder="Write your note..." renderElement={renderElement} renderLeaf={renderLeaf} onKeyDown={(event: KeyboardEvent) => handleKeyPress(event)}/>
+            <Editable style={editorStyles(readOnly)} readOnly={readOnly} placeholder="Write your note..." renderElement={renderElement} renderLeaf={renderLeaf} onKeyDown={(event: KeyboardEvent) => handleKeyPress(event)}/>
         </Slate>
     )
 }
