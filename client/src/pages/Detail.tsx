@@ -39,9 +39,9 @@ export function Detail(): JSX.Element {
     return (
         loading ? <p>Loading...</p> :
             <div>
-                <Headline text={note.header} />
-                {note.text && <RichtextEditor value={JSON.parse(note.text)} />}
                 <span style={{fontStyle: 'italic'}}>{note.date}</span>
+                <Headline text={note.header} />
+                {note.text && <RichtextEditor editorValue={JSON.parse(note.text)} />}
             </div>
 
     )

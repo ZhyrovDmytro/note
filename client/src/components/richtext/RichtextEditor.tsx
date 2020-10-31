@@ -8,11 +8,13 @@ import {Blockquote, CodeElement, DefaultElement, ListElement} from './richtext-e
 import {ToolbarRichtext} from './ToolbarRichtext';
 
 interface RichTextEditorProps {
-    value?: Node[];
+    editorValue?: Node[];
+    readOnly?: boolean;
     handleNoteValue?(note: string, id: string): void;
 }
 
 export function RichtextEditor(props: RichTextEditorProps): JSX.Element {
+    const {readOnly = false, editorValue, handleNoteValue} = props;
     const editor = React.useMemo(() => withReact(createEditor()), []);
     const [value, setValue] = React.useState<Node[]>([
         {
@@ -20,7 +22,6 @@ export function RichtextEditor(props: RichTextEditorProps): JSX.Element {
             children: [{ text: '' }],
         },
     ]);
-    const readOnly = Boolean(props.value);
 
     const editorStyles = (isReadOnly: boolean) => ({
         outline: 'none',
@@ -36,9 +37,7 @@ export function RichtextEditor(props: RichTextEditorProps): JSX.Element {
     }) as CSSProperties;
 
     React.useEffect(() => {
-        if(readOnly) {
-            setValue(props.value);
-        }
+        setValue(editorValue);
     },[]);
 
     const renderElement = React.useCallback(props => {
@@ -66,7 +65,7 @@ export function RichtextEditor(props: RichTextEditorProps): JSX.Element {
 
     function handleChange(newValue: Node[]): void {
         setValue(newValue);
-        props.handleNoteValue(JSON.stringify(newValue), 'note');
+        handleNoteValue(JSON.stringify(newValue), 'note');
     }
 
     const handleKeyPress = (e: KeyboardEvent): void => {
