@@ -1,5 +1,7 @@
+import {Button} from '@material-ui/core';
 import * as React from 'react';
 import {Headline} from '../components/Headline';
+import {ModalLayer} from '../components/Modal';
 import {RichtextEditor} from '../components/richtext/RichtextEditor';
 import {AuthContext} from '../context/AuthContext';
 import {useHTTP} from '../hooks/useHTTP';
@@ -36,12 +38,21 @@ export function Detail(): JSX.Element {
         getNote();
     }, []);
 
+    const handleEdit = () => {
+        // TODO: add functionality
+    };
+
     return (
         loading ? <p>Loading...</p> :
             <div>
                 <span style={{fontStyle: 'italic'}}>{note.date}</span>
                 <Headline text={note.header} />
-                {note.text && <RichtextEditor editorValue={JSON.parse(note.text)} />}
+                {note.text && (
+                    <>
+                        <RichtextEditor editorValue={JSON.parse(note.text)} />
+                        <Button style={{marginTop: '20px'}} color="primary" variant='contained' onClick={handleEdit}>Edit</Button>
+                    </>
+                )}
             </div>
 
     )

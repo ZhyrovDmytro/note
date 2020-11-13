@@ -37,7 +37,9 @@ export function RichtextEditor(props: RichTextEditorProps): JSX.Element {
     }) as CSSProperties;
 
     React.useEffect(() => {
-        setValue(editorValue);
+        if(editorValue) {
+            setValue(editorValue);
+        }
     },[]);
 
     const renderElement = React.useCallback(props => {

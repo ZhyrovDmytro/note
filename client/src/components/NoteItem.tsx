@@ -47,14 +47,18 @@ export function NoteItem(props: NoteItemProps): JSX.Element {
         setOpenModal(false);
     };
 
+    const handleEdit = () => {
+        // TODO: add functionality
+    };
+
     return (
         <Paper>
             <Card>
                 <CardContent>
-                <Typography variant="h4" component="h4"> {props.header}</Typography>
-                <div style={{maxWidth: '250px', maxHeight: '450px', overflow: 'hidden'}}>
-                    <RichtextEditor editorValue={noteData} readOnly />
-                </div>
+                    <Typography variant="h4" component="h4"> {props.header}</Typography>
+                    <div style={{maxWidth: '250px', maxHeight: '450px', overflow: 'hidden'}}>
+                        <RichtextEditor editorValue={noteData} readOnly />
+                    </div>
                 </CardContent>
                 <CardActions>
                     <Button size="small" onClick={openDetail} variant='outlined' >More</Button>
@@ -63,8 +67,9 @@ export function NoteItem(props: NoteItemProps): JSX.Element {
                 </CardActions>
             </Card>
             <ModalLayer handleClose={handleCloseModal} open={openModal}>
-                <Typography variant="h4" component="h4"> {props.header}</Typography>
+                <Typography style={{margin: '10px 0'}} variant="h4" component="h4"> {props.header}</Typography>
                 <RichtextEditor editorValue={noteData} />
+                <Button style={{marginTop: '20px'}} color="primary" variant='contained' onClick={handleEdit}>Edit</Button>
             </ModalLayer>
         </Paper>
     )
