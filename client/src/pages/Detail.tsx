@@ -1,7 +1,6 @@
 import {Button} from '@material-ui/core';
 import * as React from 'react';
 import {Headline} from '../components/Headline';
-import {ModalLayer} from '../components/Modal';
 import {RichtextEditor} from '../components/richtext/RichtextEditor';
 import {AuthContext} from '../context/AuthContext';
 import {useHTTP} from '../hooks/useHTTP';
