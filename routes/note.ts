@@ -43,19 +43,26 @@ router.post(
   }
 );
 
-router.put('/update',async (req: UpdateNoteRequest, res: express.Response) => {
+router.put('/update', async (req: UpdateNoteRequest, res: express.Response) => {
   try {
-    const { text, header, noteId } = req.body;
+    const { text, header } = req.body;
 
-    const updatedNote = new Note({
-      text,
-      header,
-      owner: req.headers.userId
-    });
+    // console.log(text);
+    // const updatedNote = new Note({
+    //   text,
+    //   header,
+    //   owner: req.headers.userId
+    // });
 
-    Note.findByIdAndUpdate(noteId, updatedNote, {new: true});
+    const data = await Note.findOneAndUpdate(
+      { header: header },
+      { $set: { text, header, owner: req.headers.userId } },
+      {
+        upsert: true
+      }
+    );
 
-    res.status(200).json({ updatedNote });
+    res.status(200).json({ data });
   } catch (e) {
     res.status(500).json({ message: 'Something went wrong' });
     console.error(e);

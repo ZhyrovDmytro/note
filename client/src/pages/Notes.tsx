@@ -52,6 +52,20 @@ export function Notes() {
         setNotes(upd);
     }, [notes]);
 
+    const handleNoteUpdate = React.useCallback( (id: string, updatedText: string) => {
+        const noteIndex = notes.findIndex(note => note._id === id);
+
+        const updatedObj = { ...notes[noteIndex], text: updatedText};
+
+        const updatedNotes = [
+            ...notes.slice(0, noteIndex),
+            updatedObj,
+            ...notes.slice(noteIndex + 1),
+        ];
+
+        setNotes(updatedNotes);
+    }, [notes]);
+
     return (
         <>
             {loading && <Typography>Loading...</Typography>}
@@ -63,7 +77,7 @@ export function Notes() {
                             <Grid container spacing={3} alignItems={'flex-start'} alignContent={'flex-start'}>
                                 {notes.map((note: NoteItemProps) => (
                                     <Grid key={note._id} item>
-                                        <NoteItem {...note} key={note._id} removeNote={removeNote} />
+                                        <NoteItem {...note} key={note._id} removeNote={removeNote} updateNote={handleNoteUpdate}/>
                                     </Grid>
                                 ))}
                             </Grid>

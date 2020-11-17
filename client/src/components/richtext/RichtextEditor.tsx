@@ -11,10 +11,11 @@ interface RichTextEditorProps {
     editorValue?: Node[];
     readOnly?: boolean;
     handleNoteValue?(note: string, id: string): void;
+    handleEdit?(newValue: string): void;
 }
 
 export function RichtextEditor(props: RichTextEditorProps): JSX.Element {
-    const {readOnly = false, editorValue, handleNoteValue} = props;
+    const {readOnly = false, editorValue, handleNoteValue, handleEdit} = props;
     const editor = React.useMemo(() => withReact(createEditor()), []);
     const [value, setValue] = React.useState<Node[]>([
         {
@@ -66,8 +67,13 @@ export function RichtextEditor(props: RichTextEditorProps): JSX.Element {
     }, []);
 
     function handleChange(newValue: Node[]): void {
+        if(handleEdit) {
+            handleEdit(JSON.stringify(newValue))
+        }
         setValue(newValue);
-        handleNoteValue(JSON.stringify(newValue), 'note');
+        if(handleNoteValue) {
+         handleNoteValue(JSON.stringify(newValue), 'note');
+        }
     }
 
     const handleKeyPress = (e: KeyboardEvent): void => {

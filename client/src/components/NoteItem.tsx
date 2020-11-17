@@ -12,6 +12,7 @@ export interface NoteItemProps {
     text: string;
     _id: string;
     removeNote(id: string): void
+    updateNote(id: string, text: string): void;
 }
 
 export function NoteItem(props: NoteItemProps): JSX.Element {
@@ -47,8 +48,21 @@ export function NoteItem(props: NoteItemProps): JSX.Element {
         setOpenModal(false);
     };
 
-    const handleEdit = () => {
-        // TODO: add functionality
+    const handleEdit = React.useCallback((newValue: string) => {
+        props.updateNote(props._id, newValue);
+    }, []);
+
+    const submitEdit = async () => {
+        try {
+            const edited = await req('/api/note/update', 'PUT', {header: props.header, text: props.text}, {Authorization:
+                    `Bearer ${auth.token}`
+            });
+            console.log(edited);
+            props.updateNote(props._id, edited.data.text);
+            handleCloseModal();
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     return (
@@ -61,15 +75,15 @@ export function NoteItem(props: NoteItemProps): JSX.Element {
                     </div>
                 </CardContent>
                 <CardActions>
-                    <Button size="small" onClick={openDetail} variant='outlined' >More</Button>
+                    <Button size="small" onClick={openDetail} variant='outlined'>More</Button>
                     <Button size="small" onClick={handleDelete} variant='contained' color='secondary'>Delete</Button>
                     <Button size="small" onClick={handleOpenModal} variant='contained' color='primary'>Open Modal</Button>
                 </CardActions>
             </Card>
             <ModalLayer handleClose={handleCloseModal} open={openModal}>
                 <Typography style={{margin: '10px 0'}} variant="h4" component="h4"> {props.header}</Typography>
-                <RichtextEditor editorValue={noteData} />
-                <Button style={{marginTop: '20px'}} color="primary" variant='contained' onClick={handleEdit}>Edit</Button>
+                <RichtextEditor editorValue={noteData} handleEdit={handleEdit} />
+                <Button style={{marginTop: '20px'}} color="primary" variant='contained' onClick={submitEdit}>Edit</Button>
             </ModalLayer>
         </Paper>
     )
