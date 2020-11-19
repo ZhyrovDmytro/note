@@ -52,18 +52,18 @@ export function Notes() {
         setNotes(upd);
     }, [notes]);
 
-    const handleNoteUpdate = React.useCallback( (id: string, updatedText: string) => {
+    const handleNoteUpdate = React.useCallback( async (id: string, updatedText: string) => {
         const noteIndex = notes.findIndex(note => note._id === id);
 
         const updatedObj = { ...notes[noteIndex], text: updatedText};
 
-        const updatedNotes = [
+        const upd = [
             ...notes.slice(0, noteIndex),
             updatedObj,
             ...notes.slice(noteIndex + 1),
         ];
 
-        setNotes(updatedNotes);
+        setNotes(upd);
     }, [notes]);
 
     return (

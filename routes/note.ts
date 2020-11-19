@@ -45,21 +45,12 @@ router.post(
 
 router.put('/update', async (req: UpdateNoteRequest, res: express.Response) => {
   try {
-    const { text, header } = req.body;
-
-    // console.log(text);
-    // const updatedNote = new Note({
-    //   text,
-    //   header,
-    //   owner: req.headers.userId
-    // });
+    const { form, header } = req.body;
 
     const data = await Note.findOneAndUpdate(
       { header: header },
-      { $set: { text, header, owner: req.headers.userId } },
-      {
-        upsert: true
-      }
+      { $set: { text: form } },
+      { new: true }
     );
 
     res.status(200).json({ data });
