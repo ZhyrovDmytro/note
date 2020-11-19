@@ -17,22 +17,26 @@ export interface NoteItemProps {
 
 export function NoteItem(props: NoteItemProps): JSX.Element {
     const [openModal, setOpenModal] = React.useState(false);
+    const {text, header, updateNote, removeNote, _id} = props;
     const {req} = useHTTP();
     const auth = React.useContext(AuthContext);
     const { addToast } = useToasts();
-    const noteData = JSON.parse(props.text);
+    const noteData = JSON.parse(text);
     const history = useHistory();
+    const [form, setForm] = React.useState({
+        headline: '', note: ''
+    });
 
     function openDetail() {
-        history.push(`/detail/${props._id}`);
+        history.push(`/detail/${_id}`);
     }
 
     const handleDelete = React.useCallback(async () => {
         try {
-            const data = await req(`/api/note/${props._id}`, 'DELETE', null, {
+            const data = await req(`/api/note/${_id}`, 'DELETE', null, {
                 Authorization: `Bearer ${auth.token}`
             });
-            props.removeNote(props._id);
+            removeNote(_id);
             addToast({text: data.message, severity: 'success'});
         } catch (e) {
             addToast({text: "Error :(", severity: 'error'});
@@ -48,20 +52,27 @@ export function NoteItem(props: NoteItemProps): JSX.Element {
         setOpenModal(false);
     };
 
-    const handleEdit = React.useCallback((newValue: string) => {
-        props.updateNote(props._id, newValue);
-    }, []);
+    function handleNoteValue(note: string, id: string) {
+        setForm({...form, [id]: note})
+    }
 
     const submitEdit = async () => {
-        try {
-            const edited = await req('/api/note/update', 'PUT', {header: props.header, text: props.text}, {Authorization:
-                    `Bearer ${auth.token}`
-            });
-            console.log(edited);
-            props.updateNote(props._id, edited.data.text);
+        if(!form.note) {
             handleCloseModal();
-        } catch (e) {
-            console.error(e);
+            addToast({text: "Nothing changed", severity: 'warning'});
+        } else {
+            try {
+                const edited = await req('/api/note/update', 'PUT', {header: header, form: form.note}, {Authorization:
+                        `Bearer ${auth.token}`
+                });
+
+                updateNote(_id, edited.data.text);
+                handleNoteValue(edited.data.text, 'note');
+                handleCloseModal();
+                addToast({text: "Note has been edited", severity: 'success'});
+            } catch (e) {
+                console.error(e);
+            }
         }
     };
 
@@ -69,7 +80,7 @@ export function NoteItem(props: NoteItemProps): JSX.Element {
         <Paper>
             <Card>
                 <CardContent>
-                    <Typography variant="h4" component="h4"> {props.header}</Typography>
+                    <Typography variant="h4" component="h4"> {header}</Typography>
                     <div style={{maxWidth: '250px', maxHeight: '450px', overflow: 'hidden'}}>
                         <RichtextEditor editorValue={noteData} readOnly />
                     </div>
@@ -81,8 +92,8 @@ export function NoteItem(props: NoteItemProps): JSX.Element {
                 </CardActions>
             </Card>
             <ModalLayer handleClose={handleCloseModal} open={openModal}>
-                <Typography style={{margin: '10px 0'}} variant="h4" component="h4"> {props.header}</Typography>
-                <RichtextEditor editorValue={noteData} handleEdit={handleEdit} />
+                <Typography style={{margin: '10px 0'}} variant="h4" component="h4"> {header}</Typography>
+                <RichtextEditor editorValue={noteData} handleNoteValue={handleNoteValue} />
                 <Button style={{marginTop: '20px'}} color="primary" variant='contained' onClick={submitEdit}>Edit</Button>
             </ModalLayer>
         </Paper>
